@@ -1,0 +1,12 @@
+#!/bin/bash
+build() {
+    add_file /usr/lib/miniboot/detect-root.sh /detect-root.sh 0755
+    add_binary kexec
+    add_file /usr/lib/miniboot/miniswitch.sh /miniswitch.sh 0755
+}
+help() {
+    cat <<HELPEOF
+MiniBoot switch-root: mounts main root, switch_roots into miniboot dir.
+Boot with rdinit=/miniswitch.sh
+HELPEOF
+}
