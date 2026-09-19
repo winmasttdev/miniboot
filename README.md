@@ -74,3 +74,18 @@ MiniBoot boots its **own** kernel from the rescue root
 `/usr/lib/modules` must always match or nothing hardware-related loads
 (no GPU, no WiFi, no vfat). `miniboot-refresh.sh` handles this; never copy
 the host kernel over the ESP miniboot kernel.
+
+## Managing the rescue system from TTY
+
+The rescue desktop autologs in, but everything below also works from any
+TTY (Ctrl+Alt+F2):
+
+- Login: user `root`. The password is **chosen at install time** and stored
+  only as a hash — change it anytime with `passwd`.
+- Boot the main system remotely: `mainboot` (kexec, no reboot cycle).
+- Repair the main install: `arch-chroot /main` (main root is also mounted
+  at `/main` automatically; its ESP at `/main-esp`).
+- Inspect failures: `journalctl -b`, `systemctl --failed`.
+- Network: `nmcli device wifi list` / `nmtui` (NetworkManager runs).
+- SSH in: `sshd` runs; `ssh root@<mini-ip>`. Run `tailscale up` once for
+  remote access outside the LAN.
