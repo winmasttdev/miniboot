@@ -66,3 +66,11 @@ QEMU/KVM end-to-end (serial logs + screenshots): menu render and navigation,
 kernel auto-pick, microcode packing, `kexec -e` into target kernels,
 switch-root to a GNOME desktop, custom BootNext entries, rescue shells.
 Real AMD hardware: menu, sysinfo, kexec path confirmed.
+
+## Kernel pinning (important)
+
+MiniBoot boots its **own** kernel from the rescue root
+(`/opt/miniboot-root/boot/vmlinuz-linux`), not the host's — kernel and
+`/usr/lib/modules` must always match or nothing hardware-related loads
+(no GPU, no WiFi, no vfat). `miniboot-refresh.sh` handles this; never copy
+the host kernel over the ESP miniboot kernel.
