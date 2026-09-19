@@ -1,6 +1,0 @@
-post_install() {
-    echo "==> MiniBoot files installed. Create the EFI entry with:"
-    echo "    sudo ./install.sh   (from the miniboot source dir)"
-    echo "    install.sh builds the image, deploys to the ESP, harvests EFI"
-    echo "    entries and puts MiniBoot first in BootOrder."
-}
