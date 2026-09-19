@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MiniBoot — a tiny Linux bootloader with a real TUI</title>
+<style>
+:root { --bg: #0b0e1a; --card: #151a2e; --fg: #e5e7eb; --dim: #9ca3af;
+        --acc: #c084fc; --acc2: #22d3ee; --green: #22c55e; }
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font-family: system-ui, sans-serif;
+       margin: 0; padding: 0; line-height: 1.6; }
+.hero { text-align: center; padding: 72px 24px 48px;
+        background: radial-gradient(ellipse at 50% -10%, #2b1650 0%, var(--bg) 60%); }
+.hero h1 { font-size: 56px; margin: 0; letter-spacing: 2px; }
+.hero h1 span { color: var(--acc); }
+.hero p { color: var(--dim); font-size: 19px; max-width: 640px; margin: 16px auto; }
+.install { display: inline-block; background: #000; border: 1px solid #333;
+           border-radius: 10px; padding: 12px 20px; font-family: monospace;
+           font-size: 15px; margin-top: 12px; }
+.install b { color: var(--green); }
+.btns { margin-top: 24px; }
+.btn { display: inline-block; margin: 0 8px; padding: 12px 28px; border-radius: 10px;
+       font-weight: 700; font-size: 17px; text-decoration: none; }
+.btn-main { background: var(--acc); color: #0b0e1a; }
+.btn-ghost { border: 1px solid #444; color: var(--fg); }
+section { max-width: 1000px; margin: 0 auto; padding: 32px 24px; }
+h2 { font-size: 30px; border-bottom: 2px solid var(--acc); display: inline-block; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+.feat { background: var(--card); border-radius: 12px; padding: 16px; }
+.feat h3 { margin: 0 0 6px; color: var(--acc2); font-size: 17px; }
+.feat p { margin: 0; color: var(--dim); font-size: 14px; }
+.shot { background: var(--card); border-radius: 14px; padding: 16px; margin: 20px 0; }
+.shot h3 { margin: 0 0 4px; }
+.shot p { color: var(--dim); margin: 0 0 12px; font-size: 14px; }
+.shot img { width: 100%; border-radius: 8px; display: block; border: 1px solid #222; }
+pre { background: #000; border-radius: 10px; padding: 16px; overflow-x: auto; font-size: 14px; }
+code { color: var(--green); }
+footer { text-align: center; color: var(--dim); padding: 32px; font-size: 14px; }
+footer a { color: var(--acc); }
+</style>
+</head>
+<body>
+<div class="hero">
+  <h1>Mini<span>Boot</span></h1>
+  <p>A tiny Linux bootloader with a real arrow-key TUI. Shows your hardware,
+  finds your systems, and <code>kexec</code>s straight in — or drops you into a
+  rescue desktop. Inspired by ZFSBootMenu, minus the ZFS requirement.</p>
+  <div class="install"><b>$</b> git clone https://github.com/winmasttdev/miniboot && cd miniboot && sudo ./install.sh</div>
+  <div class="btns">
+    <a class="btn btn-main" href="https://github.com/winmasttdev/miniboot">GitHub</a>
+    <a class="btn btn-ghost" href="#demos">See it boot</a>
+  </div>
+</div>
+
+<section>
+  <h2>Features</h2>
+  <div class="grid">
+    <div class="feat"><h3>Real TUI</h3><p>Arrow keys, highlight bar, autoboot timer. Serial and VGA safe, zero extra binaries.</p></div>
+    <div class="feat"><h3>Live sysinfo</h3><p>CPU, RAM, disks and GPUs detected at boot, shown above the menu.</p></div>
+    <div class="feat"><h3>kexec fast-boot</h3><p>Packs microcode + initramfs and jumps — no firmware round-trip.</p></div>
+    <div class="feat"><h3>Rescue desktop</h3><p>switch_root into a full desktop with one-click Boot Main and Repair Shell.</p></div>
+    <div class="feat"><h3>OS detection</h3><p>Scans every disk for other Linux installs and lists them.</p></div>
+    <div class="feat"><h3>Custom entries</h3><p>Plain-text file on the ESP: EFI BootNext, kexec, shell, reboot.</p></div>
+    <div class="feat"><h3>Firmware reboot</h3><p>One keystroke into UEFI Setup via OsIndications.</p></div>
+    <div class="feat"><h3>Never bricks</h3><p>Adds one EFI entry. GRUB and rEFInd stay untouched behind it. Every failure lands in a rescue shell.</p></div>
+  </div>
+</section>
+
+<section id="demos">
+  <h2>Live demos</h2>
+  <p style="color:var(--dim)">Every shot below is real output — QEMU serial/VGA captures and real boot photos from development, not mockups.</p>
+
+  <div class="shot">
+    <h3>The TUI menu</h3>
+    <p>Arrow-key navigation, highlight bar, works over serial and VGA alike.</p>
+    <img src="img/tui-menu.png" alt="MiniBoot TUI menu" loading="lazy">
+  </div>
+
+  <div class="shot">
+    <h3>Sysinfo header</h3>
+    <p>CPU, RAM, kernel, disks and GPUs probed live before the menu draws.</p>
+    <img src="img/tui-v2.png" alt="MiniBoot sysinfo header" loading="lazy">
+  </div>
+
+  <div class="shot">
+    <h3>Custom EFI entries</h3>
+    <p>GRUB, rEFInd and UEFI OS harvested into the menu as BootNext entries.</p>
+    <img src="img/tui-custom.png" alt="MiniBoot custom entries" loading="lazy">
+  </div>
+
+  <div class="shot">
+    <h3>Rescue desktop</h3>
+    <p>switch_root into a full desktop: Boot Main System and Repair Shell on the desk.</p>
+    <img src="img/shot4.png" alt="MiniBoot rescue desktop" loading="lazy">
+  </div>
+
+  <div class="shot">
+    <h3>Split-disk setups work too</h3>
+    <p>Mini system found on a separate home partition — the case that bit us once.</p>
+    <img src="img/tui-split-home.png" alt="MiniBoot on split partitions" loading="lazy">
+  </div>
+</section>
+
+<section>
+  <h2>Custom entries</h2>
+  <p style="color:var(--dim)">Edit <code>EFI/miniboot/entries.conf</code> on the ESP from any OS. Format:</p>
+<pre><code># type|label|arg1|arg2|arg3
+efi|Windows Boot Manager|0001      # set BootNext, reboot
+kexec|My Kernel|/boot/vmlinuz-x|quiet  # kexec from MAIN root
+shell|Rescue shell
+reboot|Reboot now
+poweroff|Power off</code></pre>
+</section>
+
+<section>
+  <h2>Requirements</h2>
+  <p style="color:var(--dim)">Arch Linux (or derivative), <code>efibootmgr</code>, <code>kexec-tools</code>, <code>busybox</code>, <code>mkinitcpio</code>, EFI boot, kernel with <code>CONFIG_KEXEC=y</code>. Secure Boot must be off (or enroll your own keys). Uninstall anytime with <code>sudo ./uninstall.sh</code>.</p>
+</section>
+
+<footer>MIT licensed. Built at 4AM by a 12-year-old and an AI.<br>
+<a href="https://github.com/winmasttdev/miniboot">github.com/winmasttdev/miniboot</a></footer>
+</body>
+</html>
